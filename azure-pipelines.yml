@@ -11,7 +11,7 @@ pool:
 
 variables:
   solution: '**/*.sln'
-  proyectoMVC: 'ManejoPresupuesto/ManejoPresupuesto.csproj'
+  proyectoMVC: 'Pelicula-Api-Test/Pelicula-Api-Test.csproj'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
