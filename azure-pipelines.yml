@@ -11,7 +11,7 @@ pool:
 
 variables:
   solution: '**/*.sln'
-  proyectoMVC: 'Pelicula-Api-Test/Pelicula-Api-Test.csproj'
+  proyecto: '**/*.sln.csproj'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
@@ -47,7 +47,7 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: false
-    projects: $(proyectoMVC)
+    projects: $(proyecto)
     arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/webapp --runtime win-x86 --self-contained'
     zipAfterPublish: false
     modifyOutputPath: false
