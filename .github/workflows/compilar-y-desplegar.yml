@@ -11,7 +11,7 @@ on:
 
 env:
   VERSION_DOTNET: '6'
-  AZURE_APP_SERVICE_NOMBRE: nPelicula-Api-Test20250628090746
+  AZURE_APP_SERVICE_NOMBRE: Pelicula-Api-Test20250628090746
   AZURE_APP_SERVICE_UBICACION_PAQUETE: '.'
 
 jobs:
@@ -33,3 +33,30 @@ jobs:
 
       - name: Compilar
         run: dotnet build --no-restore
+
+      - name: Publicar el Web API
+        run: dotnet publish $proyecto -c Release -o miapp --runtime win-x86
+
+      - name: Cargar Artefacto
+        uses: actions/upload-artifact@v4.6.0
+        with:
+          path: ./miapp
+          name: build
+          
+  despliegue:
+    permissions:
+      contents: none
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Obtener los artefactos
+        uses: actions/download-artifact@v4.1.8
+        with:
+          name: build
+
+      - name: Despliegue al Azure App Service
+        uses: Azure/webapps-deploy@v2
+        with:
+          app-name: ${{ env.AZURE_APP_SERVICE_NOMBRE }}
+          publish-profile: ${{ secrets.AZURE_PERFIL_PUBLICO }}
+          package: ${{ env.AZURE_APP_SERVICE_UBICACION_PAQUETE }}  
