@@ -1,0 +1,35 @@
+name: Compilar y desplegar
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - 'Pelicula-Api-Test/**'
+      - '.github/workflows/compilar-y-desplegar.yml'
+
+env:
+  VERSION_DOTNET: '6'
+  AZURE_APP_SERVICE_NOMBRE: nPelicula-Api-Test20250628090746
+  AZURE_APP_SERVICE_UBICACION_PAQUETE: '.'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      proyecto: Pelicula-Api-Test/Pelicula-Api-Test.csproj
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+
+      - name: Instalar .NET
+        uses: actions/setup-dotnet@v4.3.0
+        with:
+          dotnet-version: ${{ env.VERSION_DOTNET }}
+
+      - name: Obteniendo las dependencias
+        run: dotnet restore
+
+      - name: Compilar
+        run: dotnet build --no-restore
